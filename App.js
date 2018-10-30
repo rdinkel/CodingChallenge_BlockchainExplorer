@@ -7,26 +7,47 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Alert, Platform, StyleSheet, Text, View, Button} from 'react-native';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
+const GREETING_PLATFORM_SPECIFIC_USER = Platform.select({
+  ios: 'Welcome Apple User!',
   android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu !!!!',
+    'Hello Android User!\n' +
+    'This is not the droid we are looking for !!',
 });
 
 type Props = {};
 export default class App extends Component<Props> {
   render() {
-    return (
+      return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+        <Text style={styles.welcome}>{GREETING_PLATFORM_SPECIFIC_USER}</Text>
+          <Button
+              onPress={async() => {
+                  let ethHashFromQRCode = '0x64eed727b690a2a0aa1f9519c5ac68919a0a3fa6cbd2512be41fd536a9054f52';
+                  let message = await getMessageFromGivenETHTransactionByHash(ethHashFromQRCode);
+                  // TODO: message hexadecimal to Alphabet Latin
+                  Alert.alert(message);
+              }}
+              title="Press Me"
+          />
       </View>
     );
   }
+}
+
+async function getMessageFromGivenETHTransactionByHash(hash) {
+    try {
+        let response = await fetch(
+            'https://api.blockcypher.com/v1/eth/main/txs/' + hash
+        );
+        let responseJson = await response.json();
+        let message = responseJson.outputs[0].script;
+        console.log(message);
+        return message;
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 const styles = StyleSheet.create({
@@ -34,16 +55,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#000',
   },
   welcome: {
     fontSize: 20,
     textAlign: 'center',
+    fontWeight: 'bold',
+    color: '#d5d5d5',
     margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
   },
 });
