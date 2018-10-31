@@ -8,6 +8,7 @@
 
 import React, {Component} from 'react';
 import {Alert, Platform, StyleSheet, Text, View, Button} from 'react-native';
+import {hex2ascii} from 'hex2ascii';
 
 const GREETING_PLATFORM_SPECIFIC_USER = Platform.select({
   ios: 'Welcome Apple User!',
@@ -25,9 +26,8 @@ export default class App extends Component<Props> {
           <Button
               onPress={async() => {
                   let ethHashFromQRCode = '0x64eed727b690a2a0aa1f9519c5ac68919a0a3fa6cbd2512be41fd536a9054f52';
-                  let message = await getMessageFromGivenETHTransactionByHash(ethHashFromQRCode);
-                  // TODO: message hexadecimal to Alphabet Latin
-                  Alert.alert(message);
+                  let hexMessage = await getMessageFromGivenETHTransactionByHash(ethHashFromQRCode);
+                  Alert.alert(hex2ascii(hexMessage));
               }}
               title="Press Me"
           />
