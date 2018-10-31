@@ -9,31 +9,32 @@
 import React, {Component} from 'react';
 import {Alert, Platform, StyleSheet, Text, View, Button} from 'react-native';
 import {hex2ascii} from 'hex2ascii';
+import {RNCamera, FaceDetector} from 'react-native-camera';
 
 const GREETING_PLATFORM_SPECIFIC_USER = Platform.select({
-  ios: 'Welcome Apple User!',
-  android:
-    'Hello Android User!\n' +
-    'This is not the droid we are looking for !!',
+    ios: 'Welcome Apple User!',
+    android:
+        'Hello Android User!\n' +
+        'This is not the droid we are looking for !!',
 });
 
 type Props = {};
 export default class App extends Component<Props> {
-  render() {
-      return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>{GREETING_PLATFORM_SPECIFIC_USER}</Text>
-          <Button
-              onPress={async() => {
-                  let ethHashFromQRCode = '0x64eed727b690a2a0aa1f9519c5ac68919a0a3fa6cbd2512be41fd536a9054f52';
-                  let hexMessage = await getMessageFromGivenETHTransactionByHash(ethHashFromQRCode);
-                  Alert.alert(hex2ascii(hexMessage));
-              }}
-              title="Press Me"
-          />
-      </View>
-    );
-  }
+    render() {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.welcome}>{GREETING_PLATFORM_SPECIFIC_USER}</Text>
+                <Button
+                    onPress={async () => {
+                        let ethHashFromQRCode = '0x64eed727b690a2a0aa1f9519c5ac68919a0a3fa6cbd2512be41fd536a9054f52';
+                        let hexMessage = await getMessageFromGivenETHTransactionByHash(ethHashFromQRCode);
+                        Alert.alert(hex2ascii(hexMessage));
+                    }}
+                    title="Press Me"
+                />
+            </View>
+        );
+    }
 }
 
 async function getMessageFromGivenETHTransactionByHash(hash) {
@@ -51,17 +52,17 @@ async function getMessageFromGivenETHTransactionByHash(hash) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#000',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    color: '#d5d5d5',
-    margin: 10,
-  },
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#000',
+    },
+    welcome: {
+        fontSize: 20,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        color: '#d5d5d5',
+        margin: 10,
+    },
 });
